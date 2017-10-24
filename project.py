@@ -1,5 +1,5 @@
 # import library
-from flask import Flask
+from flask import Flask, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -14,11 +14,12 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/index')
 def welcome():
-    return "Welcome to CookShare"
+    return render_template(
+            'index.html')
 
-@app.route('/login')
-def login():
-    return "This site for login"
+#@app.route('/login')
+#def login():
+    #return "This site for login"
 
 @app.route('/register')
 def register():
