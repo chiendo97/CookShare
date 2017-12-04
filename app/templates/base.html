@@ -41,6 +41,7 @@
                          Hi, {{ current_user.username }}
                      </a>
                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                         <a class="dropdown-item" href="{{ url_for('admin.user_info', user_id=current_user.id) }}">Your Profile</a>
                          <a class="dropdown-item" href="{{ url_for('admin.list_user_food', user_id=current_user.id) }}">Your Post</a>
                          <a class="dropdown-item" href="#">Edit</a>
                          <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a>

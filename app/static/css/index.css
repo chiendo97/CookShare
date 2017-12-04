@@ -12,11 +12,12 @@
 	margin-right: 5px;
 }
 body {
-	background : url("cook3.jpg");
+	/*background : url("cook3.jpg");*/
+	background-color: white;
 	background-size: cover;
 	background-position: center;
 	font-family: Lato;
-	color:  white;
+	/*color:  white;*/
 }
 h1 {
 	font-weight:  700;

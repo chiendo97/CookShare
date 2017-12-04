@@ -1,0 +1,21 @@
+<!-- app/templates/admin/users/user.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block body %}
+    <div class="content-section">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <br/>
+                    {{ utils.flashed_messages() }}
+                    <br/>
+                    <h3 style="text-align:center;">Username: {{ user.username }}</h3>
+                    <h3 style="text-align:center;">Email: {{ user.email }}</h3>
+                    <h3 style="text-align:center;"><a href="{{ url_for('admin.list_user_food', user_id=current_user.id) }}">Foods</a></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

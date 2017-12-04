@@ -8,28 +8,33 @@ from flask_login import current_user, login_required
 from . import admin
 from forms import FoodForm, StepForm
 from .. import db
-from ..models import Food, Step
+from ..models import Food, Step, User
 
-# def check_admin():
-#     """
-#
-#     """
-#     if not current_user.is_admin:
-#         abort(403)
 
 def check_user(food_id):
     """
-
+    Check user's right to commit change
     """
     logging.warn(str(food_id) + " " + str(current_user.id))
     if food_id != current_user.id:
         abort(403)
 
-@admin.route('/foods/<int:user_id>')
+@admin.route('/users/<int:user_id>')
+@login_required
+def user_info(user_id):
+    """
+    Show infomation of user
+    """
+    user = User.query.get_or_404(user_id)
+    return render_template('admin/users/user.html',
+                           user=user)
+
+
+@admin.route('/users/<int:user_id>/foods')
 @login_required
 def list_user_food(user_id):
     """
-
+    List all user's food
     """
     foods = Food.query.filter_by(user_id=user_id).all()
     return render_template('admin/foods/foods.html',
@@ -39,25 +44,22 @@ def list_user_food(user_id):
 
 # Food Views
 @admin.route('/foods', methods=['GET', 'POST'])
-@login_required
 def list_food():
     """
-    List all departments
+    List all food
     """
-    # check_admin()
 
     foods = Food.query.all()
 
     return render_template('admin/foods/foods.html',
                            foods=foods,
-                           user_id=current_user.id,
                            title="Food")
 
 @admin.route('/foods/add', methods=['GET', 'POST'])
 @login_required
 def add_food():
     """
-    List all food
+    Add food by user
     """
     # check_admin()
 
@@ -67,7 +69,6 @@ def add_food():
     if form.validate_on_submit():
         food = Food(name=form.name.data,
                     desc=form.desc.data,
-                    steps=form.steps.data,
                     user_id=current_user.id)
         try:
             # add food to database
@@ -106,7 +107,6 @@ def edit_food(id):
     if form.validate_on_submit():
         food.name = form.name.data
         food.desc = form.desc.data
-        food.steps = form.steps.data
         db.session.commit()
         flash("You have successfully edited the Food")
 
@@ -137,34 +137,32 @@ def delete_food(id):
     return redirect(url_for('admin.list_food'))
 
 @admin.route('/foods/<int:food_id>')
-@login_required
 def list_step(food_id):
     """
     List all Step of one Food
     """
     food = Food.query.get_or_404(food_id)
 
-    check_user(food.user_id)
-
-    steps = Step.query.filter_by(food_id = food_id).all()
-
     return render_template('admin/steps/steps.html',
                            food=food,
                            food_id = food_id,
-                           steps =steps,
                            title="Steps")
 
-@admin.route('/foods/<int:food_id>/add_step/<int:food_order>', methods=['POST', 'GET'])
+@admin.route('/foods/<int:food_id>/add_step', methods=['POST', 'GET'])
 @login_required
-def add_step(food_id, food_order):
+def add_step(food_id):
+    """
+    Add more step
+    """
+
     food = Food.query.get_or_404(food_id)
+    check_user(food.user_id)
 
     add_step = True
 
     form = StepForm()
     if (form.validate_on_submit()):
-        step = Step(order=food_order,
-                    desc=form.desc.data,
+        step = Step(desc=form.desc.data,
                     food_id=food_id)
         try:
             # add step to database
@@ -186,9 +184,10 @@ def add_step(food_id, food_order):
 @login_required
 def edit_step(food_id, step_id):
     """
-
+    Edit one step
     """
-
+    food = Food.query.get_or_404(food_id)
+    check_user(food.user_id)
     add_step = False
     step = Step.query.get_or_404(step_id)
     form = StepForm(obj=step)
@@ -211,9 +210,10 @@ def edit_step(food_id, step_id):
 @login_required
 def delete_step(food_id, step_id):
     """
-
+    Delete step
     """
-
+    food = Food.query.get_or_404(food_id)
+    check_user(food.user_id)
     step = Step.query.get_or_404(step_id)
     db.session.delete(step)
     db.session.commit()

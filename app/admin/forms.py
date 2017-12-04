@@ -10,7 +10,6 @@ class FoodForm(FlaskForm):
     """
     name = StringField('Name', validators=[DataRequired()])
     desc = StringField('Description', validators=[DataRequired()])
-    steps = IntegerField('Steps', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class StepForm(FlaskForm):

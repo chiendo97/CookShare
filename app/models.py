@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True)
     email = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    foods = db.relationship('Food', backref='food', lazy='dynamic')
 
     @property
     def password(self):
@@ -59,8 +60,8 @@ class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), unique=True)
     desc = db.Column(db.String(200))
-    steps = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref("parent", uselist=False))
     step = db.relationship('Step', backref='step', lazy='dynamic')
 
     def __repr__(self):
