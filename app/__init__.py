@@ -26,7 +26,9 @@ def create_app(config_name):
         app = Flask(__name__)
         app.config.update(
             SECRET_KEY=os.getenv('SECRET_KEY'),
-            SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI')
+            # SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI')
+            SQLALCHEMY_DATABASE_URI="mysql://CookShare:Tchien123@CookShare.mysql.pythonanywhere-services.com/CookShare$CookShare2"
+            # mysql://CookShare:Tchien123@CookShare.mysql.pythonanywhere-services.com/CookShare$CookShare2
         )
     else:
         app = Flask(__name__, instance_relative_config=True)
