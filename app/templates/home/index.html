@@ -8,7 +8,7 @@
         <h1>Cook Share</h1>
         <h3>Share the best Recipes and Cooking tips</h3>
         <hr>
-        <a href="{{ url_for('admin.list_food') }}" class="btn btn-light"><i class="fa fa-cutlery" aria-hidden="true"></i> Get Started!</a>
+        <button onclick="location.href='{{ url_for('admin.list_food') }}'" class="btn btn-light"><i class="fa fa-cutlery" aria-hidden="true"></i> Get Started!</button>
     </div>
 </div>
 {% endblock %}

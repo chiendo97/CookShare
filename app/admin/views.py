@@ -1,5 +1,7 @@
 # app/admin/views.py
 
+import logging
+
 from flask import abort, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
@@ -15,8 +17,27 @@ from ..models import Food, Step
 #     if not current_user.is_admin:
 #         abort(403)
 
-# Food Views
+def check_user(food_id):
+    """
 
+    """
+    logging.warn(str(food_id) + " " + str(current_user.id))
+    if food_id != current_user.id:
+        abort(403)
+
+@admin.route('/foods/<int:user_id>')
+@login_required
+def list_user_food(user_id):
+    """
+
+    """
+    foods = Food.query.filter_by(user_id=user_id).all()
+    return render_template('admin/foods/foods.html',
+                           foods=foods,
+                           user_id=current_user.id,
+                           title="Food")
+
+# Food Views
 @admin.route('/foods', methods=['GET', 'POST'])
 @login_required
 def list_food():
@@ -28,9 +49,12 @@ def list_food():
     foods = Food.query.all()
 
     return render_template('admin/foods/foods.html',
-                           foods=foods, title="Food")
+                           foods=foods,
+                           user_id=current_user.id,
+                           title="Food")
 
 @admin.route('/foods/add', methods=['GET', 'POST'])
+@login_required
 def add_food():
     """
     List all food
@@ -43,7 +67,8 @@ def add_food():
     if form.validate_on_submit():
         food = Food(name=form.name.data,
                     desc=form.desc.data,
-                    steps=form.steps.data)
+                    steps=form.steps.data,
+                    user_id=current_user.id)
         try:
             # add food to database
             db.session.add(food)
@@ -56,8 +81,11 @@ def add_food():
         return redirect(url_for('admin.list_food'))
 
     # load food template
-    return render_template('admin/foods/food.html', action="Add",
-                           add_food=add_food, form=form,
+    return render_template('admin/foods/food.html',
+                           action="Add",
+                           user_id=current_user.id,
+                           add_food=add_food,
+                           form=form,
                            title="Add food")
 
 @admin.route('/foods/edit/<int:id>', methods=['GET', 'POST'])
@@ -71,6 +99,9 @@ def edit_food(id):
     add_food = False
 
     food = Food.query.get_or_404(id)
+
+    check_user(food.user_id)
+
     form = FoodForm(obj=food)
     if form.validate_on_submit():
         food.name = form.name.data
@@ -94,9 +125,10 @@ def delete_food(id):
     """
     Delete Food from database
     """
-    # check_admin()
-
     food = Food.query.get_or_404(id)
+
+    check_user(food.user_id)
+
     db.session.delete(food)
     db.session.commit()
     flash('You have successfully deleted food.')
@@ -111,6 +143,9 @@ def list_step(food_id):
     List all Step of one Food
     """
     food = Food.query.get_or_404(food_id)
+
+    check_user(food.user_id)
+
     steps = Step.query.filter_by(food_id = food_id).all()
 
     return render_template('admin/steps/steps.html',
