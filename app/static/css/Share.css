@@ -1,0 +1,109 @@
+#content {
+	text-align: center;
+	padding-top: 20%;
+	text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+				0px 8px 13px rgba(0,0,0,0.1),0px 18px 23px rgba(0,0,0,0.1);
+}
+
+.logo {
+	width: 25px;
+	height: 25px;
+	margin-bottom: 8px;
+	margin-right: 5px;
+}
+body {
+	
+	background-size: cover;
+	background-position: center;
+	font-family: Lato;
+	color:  white;
+}
+h1 {
+	font-weight:  700;
+	font-size: 5em;
+}
+
+html {
+	height: 100%;
+}
+
+hr {
+	width: 400px;
+	border-top: 1px solid #f8f8f8;
+	border-top: 1px solid rgba(0,0,0,0.2);
+	border: 1px solid white;
+
+}
+
+.loginbt {
+	background-color: GhostWhite ;
+	margin-left: 4px;
+	margin-top: 4px;
+}
+#loginform {
+	color : black;
+}
+#signupform {
+	color : black;
+}
+/* stop the glowing blue shadow */
+table {
+	color: black;
+}
+.form-control{
+	height: 30px;
+	margin-top: 4px;
+	margin-right: 5px;
+	margin-left: 5px;
+
+}
+.input-group-btn {
+	height:5px;
+	margin-top: 15px;
+	margin-right: 5px;
+}
+.mybtn {
+	height:30px;
+	margin-top: 4px;
+	margin-left: -2px;	
+}
+
+.table {
+	margin-top: 10%;
+}
+.caption-table {
+	color: black;
+	font-weight: bold;
+	margin-bottom: -20px;
+	
+}
+
+.style-col {
+	margin-top: 30px;
+}
+.table td, .table th {
+    padding: .45rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 1px solid #e9ecef;
+}
+.col-number {
+	width: 10%;
+} 
+
+.foodName {
+	color: black;
+	font-weight: bold;
+}
+
+.userDangBai {
+	color: black;
+	font-weight: bold;
+}
+
+.CongThucNauAn{
+	color :black;
+}

@@ -3,17 +3,12 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-<div class="intro-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="intro-message">
-                    <h1>CookShare</h1>
-                    <hr class="intro-divider">
-                    </ul>
-                </div>
-            </div>
-        </div>
+<div class="col-lg-12">
+    <div id="content">
+        <h1>Cook Share</h1>
+        <h3>Share the best Recipes and Cooking tips</h3>
+        <hr>
+        <a href="{{ url_for('admin.list_food') }}" class="btn btn-light"><i class="fa fa-cutlery" aria-hidden="true"></i> Get Started!</a>
     </div>
 </div>
 {% endblock %}

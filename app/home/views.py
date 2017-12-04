@@ -26,7 +26,4 @@ def dashboard():
 def admin_dashboard():
     # prevent non-admins from accessing the page
 
-    # if not current_user.is_admin:
-    #     abort(403)
-
     return render_template('home/admin_dashboard.html', title='Dashboard')

@@ -1,0 +1,62 @@
+<!-- app/templates/admin/steps/steps.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Roles{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Roles</h1>
+        {% if steps %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="15%"> Order </th>
+                  <th width="40%"> Description </th>
+                  <th width="15%"> Edit </th>
+                  <th width="15%"> Delete </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for step in steps %}
+                <tr>
+                  <td> {{ step.order }} </td>
+                  <td> {{ step.desc }} </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_step', step_id=step.id, food_id=step.food_id) }}">
+                      <i class="fa fa-pencil"></i> Edit
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_step', step_id=step.id, food_id=step.food_id) }}">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No Steps have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_step', food_id=food_id, food_order=1) }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add Step
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

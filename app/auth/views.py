@@ -47,13 +47,8 @@ def login():
             # log user in
             login_user(user)
 
-            # redirect to the dashboard page after login
-            return redirect(url_for('home.admin_dashboard'))
-
-            # if user.is_admin:
-            #     return redirect(url_for('home.admin_dashboard'))
-            # else:
-            #     return redirect(url_for('home.dashboard'))
+            # redirect to the food page
+            return redirect(url_for('admin.list_food'))
 
         else:
             flash('Invalid email or password')

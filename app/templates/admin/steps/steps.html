@@ -4,59 +4,72 @@
 {% extends "base.html" %}
 {% block title %}Roles{% endblock %}
 {% block body %}
-<div class="content-section">
-  <div class="outer">
-    <div class="middle">
-      <div class="inner">
-        <br/>
-        {{ utils.flashed_messages() }}
-        <br/>
-        <h1 style="text-align:center;">Roles</h1>
-        {% if steps %}
-          <hr class="intro-divider">
-          <div class="center">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th width="15%"> Order </th>
-                  <th width="40%"> Description </th>
-                  <th width="15%"> Edit </th>
-                  <th width="15%"> Delete </th>
-                </tr>
-              </thead>
-              <tbody>
-              {% for step in steps %}
-                <tr>
-                  <td> {{ step.order }} </td>
-                  <td> {{ step.desc }} </td>
-                  <td>
-                    <a href="{{ url_for('admin.edit_step', step_id=step.id, food_id=step.food_id) }}">
-                      <i class="fa fa-pencil"></i> Edit
-                    </a>
-                  </td>
-                  <td>
-                    <a href="{{ url_for('admin.delete_step', step_id=step.id, food_id=step.food_id) }}">
-                      <i class="fa fa-trash"></i> Delete
-                    </a>
-                  </td>
-                </tr>
-              {% endfor %}
-              </tbody>
-            </table>
-          </div>
-          <div style="text-align: center">
-        {% else %}
-          <div style="text-align: center">
-            <h3> No Steps have been added. </h3>
-            <hr class="intro-divider">
-        {% endif %}
-          <a href="{{ url_for('admin.add_step', food_id=food_id, food_order=1) }}" class="btn btn-default btn-lg">
-            <i class="fa fa-plus"></i>
-            Add Step
-          </a>
+<div class="row">
+        <div class="col-lg-9 style-col">
+            <div class="CongThucNauAn">
+                <div class="foodName" id="foodName">
+                    {{ food.name }}
+                </div>
+                <div class="userDangBai" id="userDangBai">
+                    By <a href="#" title="">Chien</a>
+                </div>
+                <div id="NoiDung">
+                    <div id="NguyenLieu">
+                        <p><b>Ingredients : </b></p>
+                        <ul>
+                            <li>Chicken : 2Kg</li>
+                            <li> ...</li>
+                        </ul>
+                    </div>
+                    <div id="Description">
+                        <p><b>Directions : </b></p>
+
+                        {% if steps %}
+                            <ul>
+                                {% for step in steps %}
+                                    <li>Step {{ step.order }}: {{ step.desc }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div style="text-align: center">
+                                <h3> No Steps have been added. </h3>
+                                <hr class="intro-divider">
+                            </div>
+                        {% endif %}
+                            <a href="{{ url_for('admin.add_step', food_id=food_id, food_order=1) }}"
+                               class="btn btn-default btn-lg">
+                                <i class="fa fa-plus"></i>
+                                Add Step
+                            </a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="col-lg-3 style-col">
+            <table class="table">
+                <thead>
+                <div class="caption-table">
+                    Top Contribute
+                </div>
+                <tr>
+                    <th scope="col" class="col-number">#</th>
+                    <th scope="col" class="col-User">User</th>
+                    <th scope="col" class="col-rate">Rate</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td scope="col" class="col-number">1</td>
+                    <td scope="col" class="col-User"><a href="#">Bitagi</a></td>
+                    <td scope="col" class="col-rate">6962</td>
+                </tr>
+                <tr>
+                    <td scope="col" class="col-number">2</td>
+                    <td scope="col" class="col-User"><a href="#">Chien</a></td>
+                    <td scope="col" class="col-rate">5962</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-</div>
 {% endblock %}

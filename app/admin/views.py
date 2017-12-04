@@ -28,7 +28,7 @@ def list_food():
     foods = Food.query.all()
 
     return render_template('admin/foods/foods.html',
-                           foods=foods, title="Departments")
+                           foods=foods, title="Food")
 
 @admin.route('/foods/add', methods=['GET', 'POST'])
 def add_food():
@@ -110,9 +110,11 @@ def list_step(food_id):
     """
     List all Step of one Food
     """
+    food = Food.query.get_or_404(food_id)
     steps = Step.query.filter_by(food_id = food_id).all()
 
     return render_template('admin/steps/steps.html',
+                           food=food,
                            food_id = food_id,
                            steps =steps,
                            title="Steps")
