@@ -1,9 +1,0 @@
-wellcome: /
-login: /login
-register: /register
-user: /users/<int id>
-
-show food: /<int food-id>
-edit food: /<int food-id>/edit
-create food: /create
-commend food: /<int food-id>/commend
