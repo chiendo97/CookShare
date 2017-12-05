@@ -17,6 +17,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     foods = db.relationship('Food', backref='food', lazy='dynamic')
+    # like = db.relationship('Upvote', backref='upvote', lazy='dynamic')
+    users = db.relationship('Upvote_user', backref='upvote_user', lazy='dynamic')
 
     @property
     def password(self):
@@ -63,6 +65,7 @@ class Food(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref("parent", uselist=False))
     step = db.relationship('Step', backref='step', lazy='dynamic')
+    like = db.relationship('Upvote', backref='upvote', lazy='dynamic')
 
     def __repr__(self):
         return '<Food: {}>'.format(self.name)
@@ -81,3 +84,25 @@ class Step(db.Model):
 
     def __repr__(self):
         return '<Step: {}>'.format(self.desc)
+
+class Upvote(db.Model):
+    """
+    Create upvote table for like, unlike
+    """
+
+    __tablename__ = 'upvote'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    food_id = db.Column(db.Integer, db.ForeignKey('food.id'))
+
+class Upvote_user(db.Model):
+    """
+    Create upvote table for users to users
+    """
+
+    __tablename__ = 'upvote_user'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user1_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user2_id = db.Column(db.Integer)

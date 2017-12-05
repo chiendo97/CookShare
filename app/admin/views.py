@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 from . import admin
 from forms import FoodForm, StepForm
 from .. import db
-from ..models import Food, Step, User
+from ..models import Food, Step, User, Upvote, Upvote_user
 
 
 def check_user(food_id):
@@ -18,6 +18,41 @@ def check_user(food_id):
     logging.warn(str(food_id) + " " + str(current_user.id))
     if food_id != current_user.id:
         abort(403)
+
+@admin.route('/vote/<int:user_id>/<int:food_id>', methods=['POST', 'GET'])
+@login_required
+def vote(user_id, food_id):
+    upvote = Upvote.query.filter_by(food_id=food_id).filter_by(user_id=user_id).first()
+    if upvote is not None:
+        try:
+            db.session.delete(upvote)
+            db.session.commit()
+            flash("You have successfuly downvote this Food")
+
+        except:
+            flash("Failed to downvote this Food")
+    else:
+        new_upvote = Upvote(food_id=food_id,
+                            user_id=user_id)
+        try:
+            db.session.add(new_upvote)
+            db.session.commit()
+            flash("You have successfully upvote this Food")
+
+            food = Food.query.filter_by(id=food_id).first()
+            upvote_user = Upvote_user.query.filter_by(user1_id=food.user_id).filter_by(user2_id=user_id).first()
+            if (upvote_user is None):
+                new_upvote_user = Upvote_user(user1_id=food.user_id,
+                                              user2_id=user_id)
+                db.session.add(new_upvote_user)
+                db.session.commit()
+                flash("You have successfuly upvote for this User")
+
+        except:
+            flash("Failed to upvote this Food")
+
+
+    return redirect(url_for('admin.list_food'))
 
 @admin.route('/users/<int:user_id>')
 @login_required
@@ -40,7 +75,7 @@ def list_user_food(user_id):
     return render_template('admin/foods/foods.html',
                            foods=foods,
                            user_id=current_user.id,
-                           title="Food")
+                           title="User_food")
 
 # Food Views
 @admin.route('/foods', methods=['GET', 'POST'])
@@ -53,7 +88,7 @@ def list_food():
 
     return render_template('admin/foods/foods.html',
                            foods=foods,
-                           title="Food")
+                           title="All_food")
 
 @admin.route('/foods/add', methods=['GET', 'POST'])
 @login_required
