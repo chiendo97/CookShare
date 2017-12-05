@@ -4,24 +4,24 @@ import logging
 
 from flask import abort, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
+from sqlalchemy import func
 
 from . import admin
 from forms import FoodForm, StepForm
 from .. import db
-from ..models import Food, Step, User, Upvote, Upvote_user
+from ..models import Food, Step, User, Upvote
 
 
 def check_user(food_id):
     """
     Check user's right to commit change
     """
-    logging.warn(str(food_id) + " " + str(current_user.id))
     if food_id != current_user.id:
         abort(403)
 
-@admin.route('/vote/<int:user_id>/<int:food_id>', methods=['POST', 'GET'])
+@admin.route('/vote/<int:user_id>/<int:food_id>/<int:ref>', methods=['POST', 'GET'])
 @login_required
-def vote(user_id, food_id):
+def vote(user_id, food_id, ref):
     upvote = Upvote.query.filter_by(food_id=food_id).filter_by(user_id=user_id).first()
     if upvote is not None:
         try:
@@ -39,20 +39,13 @@ def vote(user_id, food_id):
             db.session.commit()
             flash("You have successfully upvote this Food")
 
-            food = Food.query.filter_by(id=food_id).first()
-            upvote_user = Upvote_user.query.filter_by(user1_id=food.user_id).filter_by(user2_id=user_id).first()
-            if (upvote_user is None):
-                new_upvote_user = Upvote_user(user1_id=food.user_id,
-                                              user2_id=user_id)
-                db.session.add(new_upvote_user)
-                db.session.commit()
-                flash("You have successfuly upvote for this User")
-
         except:
             flash("Failed to upvote this Food")
 
-
-    return redirect(url_for('admin.list_food'))
+    if ref==0:
+        return redirect(url_for('admin.list_food'))
+    else:
+        return redirect(url_for('admin.list_user_food', user_id=ref))
 
 @admin.route('/users/<int:user_id>')
 @login_required
@@ -71,10 +64,17 @@ def list_user_food(user_id):
     """
     List all user's food
     """
-    foods = Food.query.filter_by(user_id=user_id).all()
+    # foods = db.session.query(Food, Upvote, func.count(Upvote.food_id)).join(Upvote, isouter=True).group_by(Food.id)
+    foods = db.session.query(Food, Upvote, func.count(Upvote.food_id)).join(Upvote, isouter=True).group_by(
+        Food.id).filter(Food.user_id == user_id)
+
+    if foods.count() == 0:
+        abort(404)
+
     return render_template('admin/foods/foods.html',
                            foods=foods,
                            user_id=current_user.id,
+                           ref=current_user.id,
                            title="User_food")
 
 # Food Views
@@ -84,10 +84,11 @@ def list_food():
     List all food
     """
 
-    foods = Food.query.all()
+    foods = db.session.query(Food, Upvote, func.count(Upvote.food_id)).join(Upvote, isouter=True).group_by(Food.id)
 
     return render_template('admin/foods/foods.html',
                            foods=foods,
+                           ref=0,
                            title="All_food")
 
 @admin.route('/foods/add', methods=['GET', 'POST'])
@@ -96,9 +97,6 @@ def add_food():
     """
     Add food by user
     """
-    # check_admin()
-
-    add_food = True
 
     form = FoodForm()
     if form.validate_on_submit():
@@ -120,7 +118,7 @@ def add_food():
     return render_template('admin/foods/food.html',
                            action="Add",
                            user_id=current_user.id,
-                           add_food=add_food,
+                           add_food=True,
                            form=form,
                            title="Add food")
 
@@ -130,9 +128,6 @@ def edit_food(id):
     """
     Edit food
     """
-    # check_admin()
-
-    add_food = False
 
     food = Food.query.get_or_404(id)
 
@@ -150,8 +145,10 @@ def edit_food(id):
 
     form.desc.data = food.desc
     form.name.data = food.name
-    return render_template('admin/foods/food.html', action="Edit",
-                           add_food=add_food, form=form,
+    return render_template('admin/foods/food.html',
+                           action="Edit",
+                           add_food=False,
+                           form=form,
                            food=food, title="Edit Food")
 
 @admin.route('/foods/delete/<int:id>', methods=['GET', 'POST'])
@@ -178,9 +175,13 @@ def list_step(food_id):
     """
     food = Food.query.get_or_404(food_id)
 
+    top_users = db.session.query(User, func.count(User.id).label('asdf')).join(Food, User.id == Food.user_id).group_by(
+        User.id).order_by('asdf desc');
+
     return render_template('admin/steps/steps.html',
                            food=food,
                            food_id = food_id,
+                           users=top_users,
                            title="Steps")
 
 @admin.route('/foods/<int:food_id>/add_step', methods=['POST', 'GET'])
@@ -193,8 +194,6 @@ def add_step(food_id):
     food = Food.query.get_or_404(food_id)
     check_user(food.user_id)
 
-    add_step = True
-
     form = StepForm()
     if (form.validate_on_submit()):
         step = Step(desc=form.desc.data,
@@ -205,13 +204,13 @@ def add_step(food_id):
             db.session.commit()
             flash('You have successfully added a new step')
         except:
-            flash('Error: failed to add new Step')
+            flash('Error: failed to add a new Step')
 
         # redirect to the food Page
         return redirect(url_for('admin.list_step', food_id=food_id))
     # load step template
     return render_template('admin/steps/step.html',
-                           add_step=add_step,
+                           add_step=True,
                            form=form,
                            title='Add step')
 

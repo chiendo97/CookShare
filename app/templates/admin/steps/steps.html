@@ -26,7 +26,7 @@
                     </div>
                     <div id="Description">
                         <p><b>Directions : </b></p>
-                        {% if food.step %}
+                        {% if food.step.count() %}
                             <hr class="intro-divider">
                             <div class="center">
                                 <table class="table table-striped table-bordered">
@@ -58,12 +58,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
-{#                            <ul>#}
-{#                                {% for step in food.step %}#}
-{#                                    <li>Step {{ loop.index }}: {{ step.desc }}</li>#}
-{#                                {% endfor %}#}
-{#                            </ul>#}
                         {% else %}
                             <div style="text-align: center">
                                 <h3> No Steps have been added. </h3>
@@ -92,16 +86,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td scope="col" class="col-number">1</td>
-                    <td scope="col" class="col-User"><a href="#">Bitagi</a></td>
-                    <td scope="col" class="col-rate">6962</td>
-                </tr>
-                <tr>
-                    <td scope="col" class="col-number">2</td>
-                    <td scope="col" class="col-User"><a href="#">Chien</a></td>
-                    <td scope="col" class="col-rate">5962</td>
-                </tr>
+                {% for user in users %}
+                    <tr>
+                        <td scope="col" class="col-number">{{ loop.index }}</td>
+                        <td scope="col" class="col-User"><a href="#">{{ user[0].email }}</a></td>
+                        <td scope="col" class="col-rate">{{ user[1] }}</td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
