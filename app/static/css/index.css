@@ -29,7 +29,10 @@ html {
 
 hr {
 	border: 1px solid white;
-
+	width: 400px;
+	border-top: 1px solid #f8f8f8;
+	border-top: 1px solid rgba(0,0,0,0.2);
+	
 }
 
 .loginbt {

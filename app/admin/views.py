@@ -83,10 +83,14 @@ def list_user_food(user_id):
     if foods.count() == 0:
         abort(404)
 
+    top_users = db.session.query(User, func.count(User.id).label('asdf')).join(Food, User.id == Food.user_id).group_by(
+        User.id).order_by('asdf desc');
+
     return render_template('admin/foods/foods.html',
                            foods=foods,
                            user_id=current_user.id,
                            ref=current_user.id,
+                           users=top_users,
                            title="User_food")
 
 # Food Views
@@ -98,9 +102,13 @@ def list_food():
 
     foods = db.session.query(Food, Upvote, func.count(Upvote.food_id)).join(Upvote, isouter=True).group_by(Food.id)
 
+    top_users = db.session.query(User, func.count(User.id).label('asdf')).join(Food, User.id == Food.user_id).group_by(
+        User.id).order_by('asdf desc');
+
     return render_template('admin/foods/foods.html',
                            foods=foods,
                            ref=0,
+                           users=top_users,
                            title="All_food")
 
 @admin.route('/foods/add', methods=['GET', 'POST'])

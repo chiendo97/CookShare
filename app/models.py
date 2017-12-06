@@ -59,7 +59,8 @@ class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), unique=True)
     img_url = db.Column(db.String(128))
-    desc = db.Column(db.String(200))
+    desc = db.Column(db.String(1500))
+    test = db.Column(db.String(500))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     step = db.relationship('Step', backref='food', lazy='dynamic')
 

@@ -42,10 +42,10 @@ def create_app(config_name):
         app.config.from_pyfile('config.py')
 
     # config photo
-    app.config['UPLOADS_DEFAULT_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/static/img/'
-    app.config['UPLOADED_foods_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/static/img/foods'
-    app_config['UPLOADED_steps_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/static/img/steps'
-    app_config['UPLOADED_users_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/static/img/users'
+    app.config['UPLOADS_DEFAULT_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/'
+    app.config['UPLOADED_foods_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/foods'
+    app_config['UPLOADED_steps_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/steps'
+    app_config['UPLOADED_users_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/users'
     configure_uploads(app, foods_img)
     configure_uploads(app, steps_img)
     configure_uploads(app, users_img)
