@@ -1,1 +1,0 @@
-$('getSt').addClass('class_name')
