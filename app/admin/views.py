@@ -2,15 +2,15 @@
 
 import logging
 
-from flask import abort, flash, redirect, render_template, url_for
+from flask import abort, flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_required
 from sqlalchemy import func
+from werkzeug.utils import secure_filename
 
 from . import admin
-from forms import FoodForm, StepForm
-from .. import db
+from forms import FoodForm, StepForm, ImageForm
+from .. import db, foods_img, steps_img, users_img
 from ..models import Food, Step, User, Upvote
-
 
 def check_user(food_id):
     """
@@ -18,6 +18,18 @@ def check_user(food_id):
     """
     if food_id != current_user.id:
         abort(403)
+
+
+@admin.route('/upload', methods=['POST', 'GET'])
+@login_required
+def upload():
+    if request.method == 'POST' and 'photo' in request.files:
+        # filename = foods_img.save(request.files['photo'], name=secure_filename(request.filename))
+        img = request.files['photo']
+        filename = foods_img.save(request.files['photo'], name=secure_filename(img.filename))
+        return foods_img.path(filename)
+
+    return "Failed"
 
 @admin.route('/vote/<int:user_id>/<int:food_id>/<int:ref>', methods=['POST', 'GET'])
 @login_required
@@ -99,10 +111,20 @@ def add_food():
     """
 
     form = FoodForm()
+    image = ImageForm()
     if form.validate_on_submit():
-        food = Food(name=form.name.data,
-                    desc=form.desc.data,
-                    user_id=current_user.id)
+        img_filename = request.files['photo'].filename
+        if (img_filename == ''):
+            food = Food(name=form.name.data,
+                        desc=form.desc.data,
+                        user_id=current_user.id)
+        else:
+            foods_img.save(request.files['photo'])
+            food = Food(name=form.name.data,
+                        desc=form.desc.data,
+                        img_url=img_filename,
+                        user_id=current_user.id)
+
         try:
             # add food to database
             db.session.add(food)
@@ -120,6 +142,7 @@ def add_food():
                            user_id=current_user.id,
                            add_food=True,
                            form=form,
+                           image=image,
                            title="Add food")
 
 @admin.route('/foods/edit/<int:id>', methods=['GET', 'POST'])

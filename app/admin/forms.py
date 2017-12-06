@@ -1,7 +1,7 @@
 # app/admin/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, FileField, TextAreaField
 from wtforms.validators import DataRequired
 
 class FoodForm(FlaskForm):
@@ -9,7 +9,7 @@ class FoodForm(FlaskForm):
     Form for user to add or edit a Food
     """
     name = StringField('Name', validators=[DataRequired()])
-    desc = StringField('Description', validators=[DataRequired()])
+    desc = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class StepForm(FlaskForm):
@@ -18,3 +18,10 @@ class StepForm(FlaskForm):
     """
     desc = StringField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class ImageForm(FlaskForm):
+    """
+    Form for uploading image
+    """
+    image = FileField('Image', validators=[DataRequired()])
+    submit = SubmitField('Submit image')

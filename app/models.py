@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True)
     email = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    img_url = db.Column(db.String(128))
     foods = db.relationship('Food', backref='user', lazy='dynamic')
     # users = db.relationship('Upvote_user', backref='upvote_user', lazy='dynamic')
     @property
@@ -42,8 +43,6 @@ class User(UserMixin, db.Model):
         """
         return check_password_hash(self.password_hash, password)
 
-    def __repr__(self):
-        return '<User: {}'.format(self.username)
 
 # Set up User_loader
 @login_manager.user_loader
@@ -59,6 +58,7 @@ class Food(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), unique=True)
+    img_url = db.Column(db.String(128))
     desc = db.Column(db.String(200))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     step = db.relationship('Step', backref='food', lazy='dynamic')
@@ -74,12 +74,9 @@ class Step(db.Model):
     __tablename__ = 'step'
 
     id = db.Column(db.Integer, primary_key=True)
-    order = db.Column(db.Integer)
+    img_url = db.Column(db.String(128))
     desc = db.Column(db.String(200))
     food_id = db.Column(db.Integer, db.ForeignKey('food.id'))
-
-    def __repr__(self):
-        return '<Step: {}>'.format(self.desc)
 
 class Upvote(db.Model):
     """

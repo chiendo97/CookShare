@@ -16,6 +16,8 @@
                 <div class="userDangBai" id="userDangBai">
                     By <a href="{{ url_for('admin.user_info', user_id=food.user.id) }}" title=""> {{ food.user.username }} </a>
                 </div>
+                <img src="{{ url_for('static', filename='img/foods/' + food.img_url) }}" alt="">
+
                 <div id="NoiDung">
                     <div id="NguyenLieu">
                         <p><b>Ingredients : </b></p>

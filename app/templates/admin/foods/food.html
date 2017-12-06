@@ -1,7 +1,21 @@
 <!-- app/templates/admin/departments/department.html -->
 
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/utils.html" as utils %}
 {% extends "base.html" %}
+{% block css %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Share.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addcongthuc.css') }}">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+
+{% endblock %}
 {% block title %}
     {% if add_food %}
         Add Food
@@ -10,21 +24,43 @@
     {% endif %}
 {% endblock %}
 {% block body %}
-<div class="content-section">
- <div class="outer">
-    <div class="middle">
-      <div class="inner">
-        <div class="center">
-            {% if add_food %}
-                <h1>Add Food</h1>
-            {% else %}
-                <h1>Edit Food</h1>
-            {% endif %}
-            <br/>
-            {{ wtf.quick_form(form) }}
-        </div>
-      </div>
+
+{#    <form method=POST enctype=multipart/form-data action="{{ url_for('admin.upload') }}">#}
+{#        <input type=file name=photo>#}
+{#        <input type="submit">#}
+{#    </form>#}
+
+    <div class="jumbotron">
+        <h3><i class="fa fa-cutlery" aria-hidden="true"></i> Add Your Recipe</h3>
+        <hr>
     </div>
-  </div>
-</div>
+    <form method=POST enctype=multipart/form-data action="{{ url_for('admin.add_food') }}">
+        {{ form.csrf_token }}
+        <div class="row has-feedback">
+            <div class="col-lg-12 form-group">
+                <label for="food-image" class="labelName"> Add your photo</label>
+                <input type="file" name="photo" class="form-control-file">
+            </div>
+        </div>
+
+        <div class="row has-feedback">
+            <div class="col-lg-12 form-group">
+                <label class="labelName" for="food_Name">Food Name</label>
+                <br>
+{#                <input type="text" name="food_Name" class="form_addFood">#}
+                {{ form.name(class ='form_addFood') }}
+            </div>
+        </div>
+        <div class="row has-feedback">
+            <div class="col-lg-12 form-group">
+                <label class="labelName" for="food_Des">Description</label>
+                <br>
+{#                <textarea type="text" name="food_Des" class="form_addFood"></textarea>#}
+                {{ form.desc(class ='form_addFood') }}
+            </div>
+        </div>
+{#        <button type="submit" class="btn btn-primary submitConthuc" data-dismiss='modal'>Save</button>#}
+        {{ form.submit(class = 'btn btn-primary submitConthuc') }}
+    </form>
+
 {% endblock %}
