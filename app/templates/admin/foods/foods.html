@@ -19,7 +19,9 @@
                             <div class="userDangBai" id="userDangBai">
                                 By <a href="abc" title="">Chien</a>
                             </div>
+                            {% if food[0].img_url %}
                             <img class="thumbnail" src="{{ url_for('static', filename='img/foods/' + food[0].img_url) }}" alt="">
+                            {% endif %}
 {#                            <img class="thumbnail" src="/static/img/foods/frychickend.jpeg" alt="">#}
                             <div id="NoiDung">
 
