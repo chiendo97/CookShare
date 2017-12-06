@@ -66,8 +66,15 @@ def user_info(user_id):
     Show infomation of user
     """
     user = User.query.get_or_404(user_id)
+
+    rate_query = db.session.query(User, func.count(Food.id)).join(Food, isouter=True).filter(User.id == 3).group_by(
+        User.id).all();
+
+    rate = rate_query[0][1]
+
     return render_template('admin/users/user.html',
-                           user=user)
+                           user=user,
+                           rate=rate)
 
 
 @admin.route('/users/<int:user_id>/foods')
