@@ -16,13 +16,14 @@
                 <div class="userDangBai" id="userDangBai">
                     By <a href="{{ url_for('admin.user_info', user_id=food.user.id) }}" title=""> {{ food.user.username }} </a>
                 </div>
+                {% if food.img_url %}
                 <img src="{{ url_for('static', filename='img/foods/' + food.img_url) }}" alt="">
-
+                {% endif %}
                 <div id="NoiDung">
                     <div id="NguyenLieu">
                         <div id = "Description">
 							<p><b>Description : </b></p>
-							<p> {{ food.desc }} </p>
+							<p> {{ food.se }} </p>
 
 						</div>
 
