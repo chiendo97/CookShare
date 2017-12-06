@@ -4,4 +4,4 @@
 *.DS_Store
 *.pyc
 instance/
-static/
+/static/
