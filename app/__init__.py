@@ -36,19 +36,26 @@ def create_app(config_name):
             SECRET_KEY=os.getenv('SECRET_KEY'),
             SQLALCHEMY_DATABASE_URI="mysql://CookShare:Tchien123@CookShare.mysql.pythonanywhere-services.com/CookShare$CookShare3"
         )
+        # config photo
+        app.config['UPLOADS_DEFAULT_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/'
+        app.config['UPLOADED_foods_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/foods'
+        app_config['UPLOADED_steps_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/steps'
+        app_config['UPLOADED_users_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/users'
+        configure_uploads(app, foods_img)
+        configure_uploads(app, steps_img)
+        configure_uploads(app, users_img)
     else:
         app = Flask(__name__, instance_relative_config=True)
         app.config.from_object(app_config[config_name])
         app.config.from_pyfile('config.py')
-
-    # config photo
-    app.config['UPLOADS_DEFAULT_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/'
-    app.config['UPLOADED_foods_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/foods'
-    app_config['UPLOADED_steps_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/steps'
-    app_config['UPLOADED_users_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/users'
-    configure_uploads(app, foods_img)
-    configure_uploads(app, steps_img)
-    configure_uploads(app, users_img)
+        # config photo
+        app.config['UPLOADS_DEFAULT_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/'
+        app.config['UPLOADED_foods_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/foods'
+        app_config['UPLOADED_steps_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/steps'
+        app_config['UPLOADED_users_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/users'
+        configure_uploads(app, foods_img)
+        configure_uploads(app, steps_img)
+        configure_uploads(app, users_img)
 
     # bootstrap
     Bootstrap(app)
