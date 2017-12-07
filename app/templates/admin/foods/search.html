@@ -23,7 +23,11 @@
                                 By <a href="#" title="">{{ food.user.username  }}</a>
                             </div>
                             {% if food.img_url %}
-                            <img class="thumbnail" src="{{ url_for('static', filename='img/foods/' + food[0].img_url) }}" alt="">
+                                <img class="thumbnail"
+                                     src="{{ url_for('static', filename='img/foods/' + food.img_url) }}" alt="">
+                            {% else %}
+                                <img class="thumbnail" src="{{ url_for('static', filename='img/foods/No_image.png') }}"
+                                     alt="">
                             {% endif %}
                             <div id="NoiDung">
 
