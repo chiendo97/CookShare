@@ -23,8 +23,7 @@ def check_user(food_id):
 def search():
     if request.method == 'POST':
         searchfood = request.form['searchfood']
-        foods = Food.query.filter(Food.name.like(searchfood)).all()
-        # foods = db.session.query(Food).filter(Food.name.like(searchfood))
+        foods = Food.query.filter(Food.name.like('%' + searchfood + '%')).all()
         top_users = db.session.query(User, func.count(User.id).label('asdf')).join(Food,
                                                                                    User.id == Food.user_id).group_by(
             User.id).order_by('asdf desc');
