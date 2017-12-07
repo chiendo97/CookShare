@@ -149,6 +149,7 @@ def add_food():
         if (img_filename == ''):
             food = Food(name=form.name.data,
                         desc=form.desc.data,
+                        img_url='No_image.png',
                         user_id=current_user.id)
         else:
             foods_img.save(request.files['photo'])

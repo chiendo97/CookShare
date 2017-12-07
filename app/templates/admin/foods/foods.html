@@ -62,7 +62,7 @@
                     {% for user in users %}
                         <tr>
                             <td scope="col" class="col-number">{{ loop.index }}</td>
-                            <td scope="col" class="col-User"><a href="#">{{ user[0].email }}</a></td>
+                            <td scope="col" class="col-User"><a href="{{ url_for('admin.user_info', user_id = user[0].id) }}">{{ user[0].email }}</a></td>
                             <td scope="col" class="col-rate">{{ user[1] }}</td>
                         </tr>
                     {% endfor %}
