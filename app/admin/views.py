@@ -19,6 +19,23 @@ def check_user(food_id):
     if food_id != current_user.id:
         abort(403)
 
+@admin.route('/search', methods=['POST', 'GET'])
+def search():
+    if request.method == 'POST':
+        searchfood = request.form['searchfood']
+        foods = Food.query.filter(Food.name.like(searchfood)).all()
+        # foods = db.session.query(Food).filter(Food.name.like(searchfood))
+        top_users = db.session.query(User, func.count(User.id).label('asdf')).join(Food,
+                                                                                   User.id == Food.user_id).group_by(
+            User.id).order_by('asdf desc');
+
+        return render_template('admin/foods/search.html',
+                               foods=foods,
+                               ref=0,
+                               users=top_users,
+                               title="Search_food")
+    else:
+        return "SEARCH"
 
 @admin.route('/upload', methods=['POST', 'GET'])
 @login_required

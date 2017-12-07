@@ -30,13 +30,12 @@
                   <a class="nav-link" href="#">Contact</a>
               </li>
               <li class="navbar-form" role="search">
-
-                  <div class="input-group">
-                      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
-                      <button class="btn btn-default mybtn" type="submit"><i class="fa fa-search"
-                                                                             aria-hidden="true"></i></button>
-                  </div>
-
+                  <form action="{{ url_for('admin.search') }}" method="post">
+                      <div class="input-group">
+                          <input class="form-control" placeholder="Search" name="searchfood" id="srch-term" type="text">
+                          <button class="btn btn-default mybtn" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                      </div>
+                  </form>
               </li>
 
           </ul>
