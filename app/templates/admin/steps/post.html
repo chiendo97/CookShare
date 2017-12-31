@@ -1,13 +1,9 @@
-<!-- app/templates/admin/departments/department.html -->
+<!-- app/templates/admin/steps/step.html -->
 
 {% import "bootstrap/wtf.html" as wtf %}
 {% extends "base.html" %}
 {% block title %}
-    {% if add_food %}
-        Add Food
-    {% else %}
-        Edit Food
-    {% endif %}
+    Post command
 {% endblock %}
 {% block body %}
 <div class="content-section">
@@ -15,11 +11,7 @@
     <div class="middle">
       <div class="inner">
         <div class="center">
-            {% if add_food %}
-                <h1>Add Food</h1>
-            {% else %}
-                <h1>Edit Food</h1>
-            {% endif %}
+            <h1>Post command</h1>
             <br/>
             {{ wtf.quick_form(form) }}
         </div>

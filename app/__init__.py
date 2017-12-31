@@ -34,28 +34,12 @@ def create_app(config_name):
         app = Flask(__name__)
         app.config.update(
             SECRET_KEY=os.getenv('SECRET_KEY'),
-            SQLALCHEMY_DATABASE_URI="mysql://CookShare:Tchien123@CookShare.mysql.pythonanywhere-services.com/CookShare$CookShare3"
+            SQLALCHEMY_DATABASE_URI="mysql://CookShare:Tchien123@CookShare.mysql.pythonanywhere-services.com/CookShare$CookShare"
         )
-        # config photo
-        app.config['UPLOADS_DEFAULT_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/'
-        app.config['UPLOADED_foods_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/foods'
-        app_config['UPLOADED_steps_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/steps'
-        app_config['UPLOADED_users_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/CookShare/app/static/img/users'
-        configure_uploads(app, foods_img)
-        configure_uploads(app, steps_img)
-        configure_uploads(app, users_img)
     else:
         app = Flask(__name__, instance_relative_config=True)
         app.config.from_object(app_config[config_name])
         app.config.from_pyfile('config.py')
-        # config photo
-        app.config['UPLOADS_DEFAULT_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/'
-        app.config['UPLOADED_foods_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/foods'
-        app_config['UPLOADED_steps_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/steps'
-        app_config['UPLOADED_users_DEST'] = os.path.dirname(os.path.abspath('asdf')) + '/app/static/img/users'
-        configure_uploads(app, foods_img)
-        configure_uploads(app, steps_img)
-        configure_uploads(app, users_img)
 
     # bootstrap
     Bootstrap(app)
@@ -71,6 +55,15 @@ def create_app(config_name):
     # init migrate
     migrate = Migrate(app, db)
 
+    # config photo
+    app.config['UPLOADS_DEFAULT_DEST'] = 'app/static/img/'
+    app.config['UPLOADED_foods_DEST'] = 'app/static/img/foods'
+    app_config['UPLOADED_steps_DEST'] = 'app/static/img/steps'
+    app_config['UPLOADED_users_DEST'] = 'app/static/img/users'
+    configure_uploads(app, foods_img)
+    configure_uploads(app, steps_img)
+    configure_uploads(app, users_img)
+
     from app import models
 
     # blueprint
@@ -82,5 +75,14 @@ def create_app(config_name):
 
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
+
+    from .food import food as food_blueprint
+    app.register_blueprint(food_blueprint, url_prefix='/food')
+
+    from .step import step as step_blueprint
+    app.register_blueprint(step_blueprint, url_prefix='/steps')
+
+    from .user import user as user_blueprint
+    app.register_blueprint(user_blueprint, url_prefix='/user')
 
     return app

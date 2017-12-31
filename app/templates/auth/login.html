@@ -4,6 +4,9 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% extends "base.html" %}
 {% block title %}Login{% endblock %}
+{% block css %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/Share.css') }} ">
+{% endblock %}
 {% block body %}
 <div class="content-section">
   <br/>

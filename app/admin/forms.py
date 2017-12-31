@@ -17,6 +17,7 @@ class StepForm(FlaskForm):
     Form for user to add step
     """
     desc = StringField('Description', validators=[DataRequired()])
+    image = FileField('Image')
     submit = SubmitField('Submit')
 
 class ImageForm(FlaskForm):
@@ -25,3 +26,10 @@ class ImageForm(FlaskForm):
     """
     image = FileField('Image', validators=[DataRequired()])
     submit = SubmitField('Submit image')
+
+class PostForm(FlaskForm):
+    """
+    Form for posting command
+    """
+    desc = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField('Post')

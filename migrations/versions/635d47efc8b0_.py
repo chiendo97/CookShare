@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: af1e5421d962
+Revision ID: 635d47efc8b0
 Revises: 
-Create Date: 2017-12-06 21:17:59.092079
+Create Date: 2017-12-30 19:04:54.068984
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'af1e5421d962'
+revision = '635d47efc8b0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,25 +23,24 @@ def upgrade():
     sa.Column('username', sa.String(length=60), nullable=True),
     sa.Column('email', sa.String(length=60), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
-    sa.Column('img_url', sa.String(length=128), nullable=True),
+    sa.Column('avatar_url', sa.String(length=128), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=False)
     op.create_table('food',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=60), nullable=True),
-    sa.Column('img_url', sa.String(length=128), nullable=True),
-    sa.Column('desc', sa.String(length=200), nullable=True),
+    sa.Column('name', sa.String(length=1500), nullable=True),
+    sa.Column('food_img_url', sa.String(length=128), nullable=True),
+    sa.Column('desc', sa.String(length=1500), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('step',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('img_url', sa.String(length=128), nullable=True),
-    sa.Column('desc', sa.String(length=200), nullable=True),
+    sa.Column('step_img_url', sa.String(length=128), nullable=True),
+    sa.Column('desc', sa.String(length=1500), nullable=True),
     sa.Column('food_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['food_id'], ['food.id'], ),
     sa.PrimaryKeyConstraint('id')

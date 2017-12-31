@@ -15,7 +15,7 @@ body {
 	background : url("cook3.jpg");
 	background-size: cover;
 	background-position: center;
-	font-family: Lato;
+	font-family: Arial, 'Myriad Pro', Helvetica, Lato;
 	color:  white;
 }
 h1 {

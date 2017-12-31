@@ -5,3 +5,5 @@
 *.pyc
 instance/
 /static/
+/app/static/img/
+!/app/static/img/foods/No_image.png

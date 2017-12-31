@@ -24,15 +24,18 @@
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
               <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('food.list_all_food') }}">Home</a>
+              </li>
+              <li class="nav-item">
                   <a class="nav-link" href="#">About</a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="#">Contact</a>
               </li>
               <li class="navbar-form" role="search">
-                  <form action="{{ url_for('admin.search') }}" method="post">
+                  <form action="{{ url_for('admin.search') }}" method="get">
                       <div class="input-group">
-                          <input class="form-control" placeholder="Search" name="searchfood" id="srch-term" type="text">
+                          <input class="form-control" placeholder="Search" name="search" id="srch-term" type="text">
                           <button class="btn btn-default mybtn" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                       </div>
                   </form>
@@ -42,7 +45,7 @@
 	     <ul class="navbar-nav navbar-right">
              {% if current_user.is_authenticated %}
                  <li class="nav-item">
-                     <a class="nav-link" href="{{ url_for('admin.add_food') }}">
+                     <a class="nav-link" href="{{ url_for('food.add_food') }}">
                          <i class="fa fa-plus" aria-hidden="true"></i>
                          Add Your Cooking Guide</a></li>
                  <li class="nav-item dropdown">
@@ -51,9 +54,7 @@
                          Hi, {{ current_user.username }}
                      </a>
                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                         <a class="dropdown-item" href="{{ url_for('admin.user_info', user_id=current_user.id) }}">Your Profile</a>
-                         <a class="dropdown-item" href="{{ url_for('admin.list_user_food', user_id=current_user.id) }}">Your Post</a>
-                         <a class="dropdown-item" href="#">Edit</a>
+                         <a class="dropdown-item" href="{{ url_for('user.user_info', user_id=current_user.id) }}">Your Profile</a>
                          <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a>
                      </div>
                  </li>

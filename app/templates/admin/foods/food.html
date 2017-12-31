@@ -34,7 +34,11 @@
         <h3><i class="fa fa-cutlery" aria-hidden="true"></i> Add Your Recipe</h3>
         <hr>
     </div>
-    <form method=POST enctype=multipart/form-data action="{{ url_for('admin.add_food') }}">
+    {% if add_food %}
+    <form method=POST enctype=multipart/form-data action="{{ url_for('food.add_food') }}">
+    {% else %}
+    <form method=POST enctype=multipart/form-data action="{{ url_for('food.edit_food', food_id=food.food_id) }}">
+    {% endif %}
         {{ form.csrf_token }}
         <div class="row has-feedback">
             <div class="col-lg-12 form-group">
@@ -47,19 +51,18 @@
             <div class="col-lg-12 form-group">
                 <label class="labelName" for="food_Name">Food Name</label>
                 <br>
-{#                <input type="text" name="food_Name" class="form_addFood">#}
                 {{ form.name(class ='form_addFood') }}
             </div>
         </div>
+
         <div class="row has-feedback">
             <div class="col-lg-12 form-group">
                 <label class="labelName" for="food_Des">Description</label>
                 <br>
-{#                <textarea type="text" name="food_Des" class="form_addFood"></textarea>#}
                 {{ form.desc(class ='form_addFood') }}
             </div>
         </div>
-{#        <button type="submit" class="btn btn-primary submitConthuc" data-dismiss='modal'>Save</button>#}
+
         {{ form.submit(class = 'btn btn-primary submitConthuc') }}
     </form>
 

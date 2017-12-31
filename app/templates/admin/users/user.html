@@ -2,21 +2,44 @@
 
 {% import "bootstrap/utils.html" as utils %}
 {% extends "base.html" %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Share.css') }} ">
+{% endblock %}
 {% block body %}
-    <div class="content-section">
-        <div class="outer">
-            <div class="middle">
-                <div class="inner">
-                    <br/>
-                    {{ utils.flashed_messages() }}
-                    <br/>
-                    <h3 style="text-align:center;">Username: {{ user.username }}</h3>
-                    <h3 style="text-align:center;">Email: {{ user.email }}</h3>
-                    <h3 style="text-align:center;"><a href="{{ url_for('admin.list_user_food', user_id=current_user.id) }}">Foods</a></h3>
-                    <h3 style="text-align:center;">Rate: {{ rate }}</h3>
-                </div>
-            </div>
+    <br/>
+    {{ utils.flashed_messages() }}
+    <br/>
+    <div class="row">
+        <div class="col-lg-9">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th width="15%"> Image</th>
+                    <th width="15%"> Name</th>
+                    <th width="25%"> Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for food in foods %}
+                    <tr>
+                        <td> {% if food.food_img_url %}
+                            <img class="thumbnail" src="{{ url_for('static', filename='img/foods/' + food.food_img_url) }}" alt="">
+                        {% else %}
+                            <img class="thumbnail" src="{{ url_for('static', filename='img/foods/No_image.png') }}" alt="">
+                        {% endif %} </td>
+                        <td> {{ food.name }} </td>
+                        <td> {{ food.desc }} <br>
+                            <a href="{{ url_for('step.list_all_steps', food_id=food.food_id) }}">See more</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>
+        <div class="col-lg-3 style-col">
+            <h5 style="text-align:center;">Username: {{ user.username }}</h5>
+            <h5 style="text-align:center;">Email: {{ user.email }}</h5>
+            <h5 style="text-align:center;">Rate: {{ user.rate }}</h5>
+        </div>
     </div>
 {% endblock %}

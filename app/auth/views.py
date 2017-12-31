@@ -50,7 +50,7 @@ def login():
             login_user(user)
 
             # redirect to the food page
-            return redirect(url_for('admin.list_food'))
+            return redirect(url_for('food.list_all_food'))
 
         else:
             flash('Invalid email or password')
